@@ -1,10 +1,8 @@
-const privateKeyToAddress = require('ethereum-private-key-to-address')
-const $ = require("jquery");
-const sha256 = require("js-sha256")
-const sha3_256 = require('js-sha3').sha3_256;
-const keccak256 = require('js-sha3').keccak256;
-const shake128 = require('js-sha3').shake128;
-const shake256 = require('js-sha3').shake256;
+import privateKeyToAddress from 'ethereum-private-key-to-address';
+import $ from 'jquery';
+import sha256 from 'js-sha256';
+import { stringToHex, stringToBinary, reverseString } from './helpers';
+import { sha3_256, keccak256, shake128, shake256 } from 'js-sha3';
 let timerValue = 0;
 let timerInterval;
 
@@ -69,31 +67,6 @@ const calculateHashes = (text) => {
     return hashArray;
 }
 
-const stringToHex = (string) => {
-    let hex, i;
-
-    let result = "";
-    for (i = 0; i < string.length; i++) {
-        hex = string.charCodeAt(i).toString(16);
-        result += hex.slice(-4);
-    }
-    return result;
-}
-
-const stringToBinary = (text) => {
-    var length = text.length,
-        output = [];
-    for (var i = 0; i < length; i++) {
-        var bin = text[i].charCodeAt().toString(2);
-        output.push(Array(8 - bin.length + 1).join("0") + bin);
-    }
-    return output.join("");
-}
-
-const reverseString = (str) => {
-    return str.split("").reverse().join("");
-}
-
 const executeTimer = () => {
     if (timerValue === 0) {
         clearInterval(timerInterval);
@@ -119,5 +92,4 @@ const displayResult = (hashArray, target, etherBalances, text) => {
     });
 }
 
-//$("#text").on("blur", generateResults);
 $("#text").on("keypress", (event) => { if (event.key === "Enter") generateResults() });
