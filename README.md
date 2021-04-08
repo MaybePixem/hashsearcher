@@ -5,7 +5,7 @@ SHA-256, SHA3-256, KECCAK-256, SHAKE-128, SHAKE-256 are supported
 
 ## Compile
 1. Run `npm install` 
-3. Run `npm run bundle`
+2. Run `npm run bundle`
 
 ## Run
 1. Execute steps from Compile
