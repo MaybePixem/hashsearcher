@@ -3,19 +3,17 @@ import $ from 'jquery';
 import sha256 from 'js-sha256';
 import { stringToHex, stringToBinary, reverseString } from './helpers';
 import { sha3_256, keccak256, shake128, shake256 } from 'js-sha3';
+import '../css/styles.css';
 let timerValue = 0;
 let timerInterval;
+const ETHERSCANAPITOKEN = "YourApiKeyToken";
 
 const generateResults = () => {
-    let normalHashArray = [];
-    let hexHashArray = [];
-    let binHashArray = [];
-    let reversedHashArray = [];
     const text = $("#text").val();
-    normalHashArray = calculateHashes(text);
-    hexHashArray = calculateHashes(stringToHex(text));
-    binHashArray = calculateHashes(stringToBinary(text));
-    reversedHashArray = calculateHashes(reverseString(text));
+    let normalHashArray = calculateHashes(text);
+    let hexHashArray = calculateHashes(stringToHex(text));
+    let binHashArray = calculateHashes(stringToBinary(text));
+    let reversedHashArray = calculateHashes(reverseString(text));
     //Get ether balance
     let publicKeyList = [];
     normalHashArray.forEach(e => {
@@ -30,13 +28,15 @@ const generateResults = () => {
     reversedHashArray.forEach(e => {
         publicKeyList.push(e.publicKey);
     });
-    $.get(`https://api.etherscan.io/api?module=account&action=balancemulti&address=${publicKeyList}&tag=latest&apikey=YourApiKeyToken`, (data) => {
+    $.get(`https://api.etherscan.io/api?module=account&action=balancemulti&address=${publicKeyList}&tag=latest&apikey=${ETHERSCANAPITOKEN}`, (data) => {
         if (data.status === "0") {
             alert("Etherscan rate limit reached");
         } else {
-            $("#text").attr("disabled", "disabled");
-            timerValue = 5000;
-            timerInterval = setInterval(executeTimer, 100);
+            if (ETHERSCANAPITOKEN === "YourApiKeyToken") {
+                $("#text").attr("disabled", "disabled");
+                timerValue = 5000;
+                timerInterval = setInterval(executeTimer, 100);
+            }
             console.log(data.message, data.result);
             displayResult(normalHashArray, "Normal", data.result, text);
             displayResult(hexHashArray, "Hex", data.result, stringToHex(text));
