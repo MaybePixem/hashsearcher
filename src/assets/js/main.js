@@ -82,11 +82,12 @@ const displayResult = (hashArray, target, etherBalances, text) => {
     $(`#tableBody${target}`).empty();
     $(`#field${target}`).text(text);
     hashArray.forEach(element => {
+        const currentBalance = etherBalances.find(e => e.account === element.publicKey).balance;
         $(`#tableBody${target}`).append(` 
-                <tr class="table-light">
+                <tr class="${currentBalance > 0 ? "highlighted" : ""} table-light">
                     <th scope="row">${element.hash}</th>
                     <td><a target="_blank" href="https://etherscan.io/address/${element.publicKey}">${element.publicKey}</a></td>
-                    <td>${etherBalances.find(e => e.account === element.publicKey).balance}</td>
+                    <td >${currentBalance}</td>
                     <td>${element.privateKey}</td>
                 </tr>`);
     });
