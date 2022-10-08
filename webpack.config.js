@@ -1,14 +1,13 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
 module.exports = {
     entry: [
         path.resolve(__dirname, './src/assets/js/main.js')
     ],
     output: {
         path: path.resolve(__dirname, './dist'),
-        filename: '[name].bundle.js',
+        filename: '[name].runtime.js',
     },
     module: {
         rules: [
@@ -18,7 +17,7 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/preset-env']
+                        presets: ['@babel/preset-react']
                     }
                 }
             },
@@ -39,18 +38,10 @@ module.exports = {
         hot: true,
         port: 8080,
     },
-    resolve: {
-        fallback: {
-            "stream": require.resolve("stream-browserify"),
-        }
-    },
     plugins: [
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, './src/index.html'),
-        }),
-        new webpack.ProvidePlugin({
-            Buffer: ['buffer', 'Buffer'],
-        })
+            template: path.resolve(__dirname, './src/index.html'),  
+        }),    
     ],
 
 }
